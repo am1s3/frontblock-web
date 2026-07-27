@@ -1,1 +1,11 @@
 
+* { box-sizing: border-box; }
+body { margin: 0; background: #0d0f12; color: #e6e6e6; font-family: system-ui, sans-serif; }
+a { color: #6aa3ff; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 32px 16px; }
+.card { background: #161a1f; border: 1px solid #232a32; border-radius: 10px; padding: 20px; margin: 16px 0; }
+input { width: 100%; padding: 10px; margin: 6px 0; background: #0d0f12; color: #fff; border: 1px solid #2a323c; border-radius: 6px; }
+button { padding: 10px 16px; background: #c0392b; color: #fff; border: 0; border-radius: 6px; cursor: pointer; font-weight: 700; }
+button.blue { background: #2563eb; }
+.err { color: #ff6b6b; } .ok { color: #6bd17a; }
+.tpa { color: #ff5a5a; } .vss { color: #5a9bff; }
