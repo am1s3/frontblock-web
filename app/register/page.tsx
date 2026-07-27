@@ -1,18 +1,33 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Panel from "@/components/Panel";
 import { api } from "@/lib/api";
+import { setToken } from "@/lib/auth";
 
 export default function Register() {
   const [nick, setNick] = useState(""); const [pass, setPass] = useState("");
   const [msg, setMsg] = useState(""); const [ok, setOk] = useState(false); const [busy, setBusy] = useState(false);
+  const router = useRouter();
+
   async function submit(e: React.FormEvent) {
     e.preventDefault(); setMsg(""); setBusy(true);
-    const r = await api("/api/auth/register", { method: "POST", body: JSON.stringify({ nickname: nick, password: pass }) });
+    const creds = { nickname: nick, password: pass };
+    const r = await api("/api/auth/register", { method: "POST", body: JSON.stringify(creds) });
+    if (!r.ok) { setBusy(false); setOk(false); setMsg(r.data?.error || "ошибка связи"); return; }
+
+    // аккаунт создан — сразу входим тем же паролем, чтобы не вводить дважды
+    const lr = await api("/api/auth/login", { method: "POST", body: JSON.stringify(creds) });
     setBusy(false);
-    if (!r.ok) { setOk(false); setMsg(r.data?.error || "ошибка связи"); return; }
-    setOk(true); setMsg("Аккаунт создан. В игре введи /login и этот же пароль.");
+    if (lr.ok && lr.data?.token) {
+      setToken(lr.data.token);                 // кричит шапке → кнопки входа пропадут
+      setOk(true); setMsg("Аккаунт создан, вход выполнен. Открываем профиль…");
+      setTimeout(() => router.push("/profile"), 600);
+    } else {
+      setOk(true); setMsg("Аккаунт создан, но авто-вход не удался — войди вручную.");
+    }
   }
+
   return (
     <>
       <h1 className="page-h">Регистрация</h1>
