@@ -8,7 +8,6 @@ export type ApiResp<T = any> = { ok: boolean; status: number; data: T | null };
 export async function api<T = any>(path: string, opts: RequestInit = {}): Promise<ApiResp<T>> {
   const token = typeof localStorage !== "undefined" ? localStorage.getItem("fb_token") : null;
   const headers: Record<string, string> = {
-    "content-content-type": "application/json",
     "content-type": "application/json",
     ...((opts.headers as Record<string, string>) || {}),
   };
