@@ -10,8 +10,8 @@ export default function NewsFeed({ limit = 4 }: { limit?: number }) {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => { api<News[]>("/api/news").then((r) => { if (r.ok && Array.isArray(r.data)) setItems(r.data.slice(0, limit)); setLoaded(true); }); }, [limit]);
 
-  if (!loaded) return <div className="muted">загрузка сводок…</div>;
-  if (!items.length) return <div className="muted">сводок пока нет — командование молчит.</div>;
+  if (!loaded) return <div className="muted">Загрузка новостей…</div>;
+  if (!items.length) return <div className="muted">Новостей пока нет.</div>;
   return (
     <ul className="news">
       {items.map((n) => (
