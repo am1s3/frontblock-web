@@ -1,8 +1,8 @@
 // Мозг один на всех. Сайт ходит с Bearer-токеном, плагин — с X-Api-Key (сайт ключ НЕ видит).
 export const WORKER = "https://frontblock-api.shushko-art.workers.dev";
-export const GITHUB_RELEASES = "https://github.com/ТВОЙ_ЛОГИН/frontblock-modpack"; // для downloads
+export const GITHUB_RELEASES = "https://github.com/ТВОЙ_ЛОГИН/frontblock-modpack";
 export const GITHUB_API_RELEASES = "https://api.github.com/repos/ТВОЙ_ЛОГИН/frontblock-modpack/releases/latest";
-export const SERVER_IP = "play.frontblock.dev"; // впиши реальный IP/домен сервера
+export const SERVER_IP = "play.frontblock.dev";
 
 export type ApiResp<T = any> = { ok: boolean; status: number; data: T | null };
 
@@ -18,6 +18,7 @@ export async function api<T = any>(path: string, opts: RequestInit = {}): Promis
     const data = await r.json().catch(() => null);
     return { ok: r.ok, status: r.status, data };
   } catch (e: any) {
-    return { ok: false, status: 0, data: { error: "связь с фронтом потеряна: " + (e?.message ?? e) } };
+    // приводим объект ошибки к T — на рантайме там реально { error }, страницы читают r.data?.error
+    return { ok: false, status: 0, data: { error: "связь с фронтом потеряна: " + (e?.message ?? e) } as unknown as T };
   }
 }
