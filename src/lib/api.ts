@@ -1,14 +1,14 @@
-// Мозг один на всех. Сайт ходит с Bearer-токеном, плагин — с X-Api-Key (сайт ключ НЕ видит).
 export const WORKER = "https://frontblock-api.shushko-art.workers.dev";
-export const GITHUB_RELEASES = "https://github.com/ТВОЙ_ЛОГИН/frontblock-modpack";
-export const GITHUB_API_RELEASES = "https://api.github.com/repos/ТВОЙ_ЛОГИН/frontblock-modpack/releases/latest";
-export const SERVER_IP = "play.frontblock.dev";
+export const GITHUB_RELEASES = "https://github.com/am1s3/frontblock-modpack";
+export const GITHUB_API_RELEASES = "https://api.github.com/repos/am1s3/frontblock-modpack/releases/latest";
+export const SERVER_IP = "FrontBlock.asrv.qzz.io";
 
 export type ApiResp<T = any> = { ok: boolean; status: number; data: T | null };
 
 export async function api<T = any>(path: string, opts: RequestInit = {}): Promise<ApiResp<T>> {
   const token = typeof localStorage !== "undefined" ? localStorage.getItem("fb_token") : null;
   const headers: Record<string, string> = {
+    "content-content-type": "application/json",
     "content-type": "application/json",
     ...((opts.headers as Record<string, string>) || {}),
   };
@@ -18,7 +18,6 @@ export async function api<T = any>(path: string, opts: RequestInit = {}): Promis
     const data = await r.json().catch(() => null);
     return { ok: r.ok, status: r.status, data };
   } catch (e: any) {
-    // приводим объект ошибки к T — на рантайме там реально { error }, страницы читают r.data?.error
     return { ok: false, status: 0, data: { error: "связь с фронтом потеряна: " + (e?.message ?? e) } as unknown as T };
   }
 }
