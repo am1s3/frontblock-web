@@ -15,12 +15,12 @@ export default function Downloads() {
   }, []);
   return (
     <>
-      <h1 className="page-h">Сборки <small>// клиент для боя</small></h1>
+      <h1 className="page-h">Скачать сборку</h1>
       <Reveal>
         <Panel label="АКТУАЛЬНАЯ СБОРКА">
           <div className="dl clip">
             <div className="dl__icon">⬡</div>
-            <div><h3>Front Block Modpack</h3><p>Forge 1.20.1 · все моды, конфиги и ресурс-пак в одном архиве.</p></div>
+            <div><h3>Front Block Modpack</h3><p>Forge 1.20.1 — все моды, конфиги и ресурс-пак в одном архиве.</p></div>
             <a className="btn btn--tpa dl__btn" href={GITHUB_RELEASES + "/releases/latest"} target="_blank" rel="noreferrer">Скачать</a>
           </div>
           {rel && rel.assets.map((a) => (
@@ -34,13 +34,13 @@ export default function Downloads() {
         </Panel>
       </Reveal>
       <Reveal delay={80}>
-        <Panel label="КАК ЗАЙТИ">
+        <Panel label="КАК ПОДКЛЮЧИТЬСЯ">
           <ol style={{ margin: 0, paddingLeft: 18, color: "var(--mut)", lineHeight: 1.9 }}>
             <li>Скачай и распакуй сборку.</li>
             <li>Зарегистрируйся на сайте и запомни пароль.</li>
-            <li>Запусти клиент, зайди на сервер — ты в лобби.</li>
-            <li>В чат: <code>/login пароль</code> → <code>/faction TPA</code> или <code>VSS</code>.</li>
-            <li>На базе бери кит и — на фронт.</li>
+            <li>Запусти клиент и зайди на сервер — ты окажешься в лобби.</li>
+            <li>В чат: <code>/login пароль</code>, затем <code>/faction TPA</code> или <code>VSS</code>.</li>
+            <li>На базе выбери набор и иди играть.</li>
           </ol>
         </Panel>
       </Reveal>
