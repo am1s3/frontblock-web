@@ -11,18 +11,18 @@ export default function Register() {
     const r = await api("/api/auth/register", { method: "POST", body: JSON.stringify({ nickname: nick, password: pass }) });
     setBusy(false);
     if (!r.ok) { setOk(false); setMsg(r.data?.error || "ошибка связи"); return; }
-    setOk(true); setMsg("Боец зарегистрирован. Тем же паролем жми /login в игре.");
+    setOk(true); setMsg("Аккаунт создан. В игре введи /login и этот же пароль.");
   }
   return (
     <>
-      <h1 className="page-h">Призыв <small>// новый боец</small></h1>
+      <h1 className="page-h">Регистрация</h1>
       <Panel label="РЕГИСТРАЦИЯ">
         <form className="form" onSubmit={submit}>
-          <div className="field"><label>ПОЗЫВНОЙ (как в игре)</label><input value={nick} onChange={(e) => setNick(e.target.value)} autoComplete="username" /></div>
-          <div className="field"><label>ПАРОЛЬ (мин. 6)</label><input type="password" value={pass} onChange={(e) => setPass(e.target.value)} autoComplete="new-password" /></div>
-          <button className="btn btn--tpa" disabled={busy}>{busy ? "ОБРАБОТКА…" : "ВСТУПИТЬ"}</button>
+          <div className="field"><label>НИКНЕЙМ (как в игре)</label><input value={nick} onChange={(e) => setNick(e.target.value)} autoComplete="username" /></div>
+          <div className="field"><label>ПАРОЛЬ (минимум 6 символов)</label><input type="password" value={pass} onChange={(e) => setPass(e.target.value)} autoComplete="new-password" /></div>
+          <button className="btn btn--tpa" disabled={busy}>{busy ? "Подожди…" : "Зарегистрироваться"}</button>
           {msg && <p className={`msg ${ok ? "ok" : "err"}`}>{msg}</p>}
-          <p className="muted" style={{ margin: 0 }}>После регистрации фракцию выберешь один раз в игре через /faction.</p>
+          <p className="muted" style={{ margin: 0 }}>Фракцию нужно будет выбрать один раз в игре командой /faction.</p>
         </form>
       </Panel>
     </>
