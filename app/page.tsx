@@ -3,9 +3,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Panel from "@/components/Panel";
 import Reveal from "@/components/Reveal";
-import CopyIp from "@/components/CopyIp";
 import NewsFeed from "@/components/NewsFeed";
-import StatBlock from "@/components/StatBlock";
+import JoinModal from "@/components/JoinModal";
 import { api } from "@/lib/api";
 
 type Row = { nickname: string; faction: string | null; kills: number; deaths: number; kd: number };
@@ -26,44 +25,38 @@ export default function Home() {
   return (
     <>
       <Reveal>
-        <section className="hero">
-          <div className="brief clip">
-            <div className="brief__stamp"><span className="live-dot" /> ФРОНТ АКТИВЕН · СЕКТОР A–F</div>
-            <h1>ВОЙНА<br />ЗА <em>КАЖДЫЙ</em><br />МЕТР</h1>
-            <p className="brief__sub">Милитари-сервер на 1.20.1. Две фракции, линия фронта в 5 километров, танки, вертолёты и FPV-дроны. Без регистрации на сайте в бой не пустят.</p>
-            <div className="brief__coords">
-              <span>LAT 50.4501</span><span>LON 30.5234</span><span>GRID 36U</span><span>v1.20.1 / FORGE</span>
+        <section className="hero" style={{ gridTemplateColumns: "1fr" }}>
+          <div className="brief clip" style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div className="brief__stamp" style={{ justifyContent: "center" }}><span className="live-dot" /> СЕРВЕР ОНЛАЙН</div>
+            <h1 style={{ textTransform: "none", fontSize: "clamp(3rem,9vw,6rem)" }}>Front<span className="tpa">Block</span></h1>
+            <p className="brief__sub" style={{ margin: "10px auto 0", fontSize: "1.4rem", color: "var(--txt)" }}>Новый милитари-сервер</p>
+            <div style={{ display: "flex", gap: 18, justifyContent: "center", fontFamily: "var(--font-mono)", fontSize: 13, marginTop: 16, color: "var(--mut)" }}>
+              <span><span className="tpa">ТПА</span> {tpa} в строю</span>
+              <span style={{ color: "var(--mut2)" }}>·</span>
+              <span><span className="vss">ВСС</span> {vss} в строю</span>
             </div>
-            <div className="brief__cta">
-              <Link href="/register" className="btn btn--tpa">Встать в строй</Link>
+            <div className="brief__cta" style={{ justifyContent: "center" }}>
+              <JoinModal />
               <Link href="/downloads" className="btn btn--ghost">Скачать сборку</Link>
+              <Link href="/register" className="btn btn--ghost">Регистрация</Link>
             </div>
-          </div>
-          <div style={{ display: "grid", gap: 16 }}>
-            <CopyIp />
-            <Panel label="СИЛЫ СТОРОН">
-              <div className="grid-2" style={{ margin: 0 }}>
-                <StatBlock value={tpa} label="ТПА в строю" accent="tpa" />
-                <StatBlock value={vss} label="ВСС в строю" accent="vss" />
-              </div>
-            </Panel>
           </div>
         </section>
       </Reveal>
 
       <Reveal delay={80}>
-        <div className="section-h"><h2>Фракции</h2><span>// выбери один раз — намертво</span></div>
+        <div className="section-h"><h2>Фракции</h2><span>// выбор один раз</span></div>
         <div className="factions">
           <div className="fac fac--tpa clip">
             <div className="fac__tag">ТПА</div>
             <h3>Повстанческая армия</h3>
-            <p>Партизаны, рейды, засады и рои FPV-дронов. Красная повязка, лесной камуфляж, тактика удара и ухода.</p>
+            <p>Партизаны, рейды и засады. Тактика быстрого удара и FPV-дронов.</p>
             <div className="fac__count">в строю: <b>{tpa}</b></div>
           </div>
           <div className="fac fac--vss clip">
             <div className="fac__tag">ВСС</div>
             <h3>Силы сопротивления</h3>
-            <p>Регулярка, оборона рубежей и бронетехника. Синяя повязка, стандарт НАТО, дисциплина и огневой вал.</p>
+            <p>Регулярная армия, оборона рубежей и бронетехника.</p>
             <div className="fac__count">в строю: <b>{vss}</b></div>
           </div>
         </div>
@@ -71,17 +64,17 @@ export default function Home() {
 
       <div className="grid-2">
         <Reveal delay={120}>
-          <Panel label="СВОДКИ С ФРОНТА"><NewsFeed /></Panel>
+          <Panel label="НОВОСТИ"><NewsFeed /></Panel>
         </Reveal>
         <Reveal delay={160}>
-          <Panel label="ТОП БОЙЦОВ">
+          <Panel label="ЛУЧШИЕ ИГРОКИ">
             {top.length ? (
-              <table className="tbl"><thead><tr><th>#</th><th>Боец</th><th>Фр.</th><th>K/D</th></tr></thead>
+              <table className="tbl"><thead><tr><th>#</th><th>Игрок</th><th>Фр.</th><th>K/D</th></tr></thead>
                 <tbody>{top.map((r, i) => (
                   <tr key={r.nickname}><td className="mono">{i + 1}</td><td>{r.nickname}</td>
                     <td className={(r.faction || "").toLowerCase()}>{r.faction || "—"}</td><td className="mono">{r.kd}</td></tr>
                 ))}</tbody></table>
-            ) : <div className="muted">пока пусто — иди навоюй.</div>}
+            ) : <div className="muted">пока нет данных.</div>}
             <div style={{ marginTop: 12 }}><Link href="/leaderboard" className="btn btn--ghost btn--sm">Весь рейтинг →</Link></div>
           </Panel>
         </Reveal>
