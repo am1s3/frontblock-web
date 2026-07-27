@@ -4,26 +4,31 @@ import Panel from "@/components/Panel";
 import StatBlock from "@/components/StatBlock";
 import Reveal from "@/components/Reveal";
 import { api } from "@/lib/api";
-import { useAuth, getToken } from "@/lib/auth";
+import { getToken } from "@/lib/auth";
 
 type Me = { nickname: string; rank: number; faction: string | null; subteam: string | null; kills: number; deaths: number; headshots: number; vehicles_destroyed: number; money: number; playtime_seconds: number; is_admin: boolean };
 
 export default function Profile() {
-  const { loading: authLoading } = useAuth();
   const [me, setMe] = useState<Me | null>(null);
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(true);
 
   useEffect(() => {
-    if (authLoading) return;          // ждём, пока useAuth дочитает хранилище
-    const t = getToken();             // смотрим токен НАПРЯМУЮ — без зависимости от состояния nick
-    if (!t) { setErr("Сначала войди в систему."); setBusy(false); return; }
-    api<Me>("/api/me").then((r) => {
-      if (r.ok && r.data) setMe(r.data);
-      else setErr("Сессия истекла — войди заново.");
-      setBusy(false);
-    });
-  }, [authLoading]);
+    let alive = true;
+    const load = async () => {
+      setErr(""); setBusy(true);
+      const t = getToken();                       // читаем токен НАПРЯМУЮ из хранилища
+      if (!t) { if (alive) { setErr("Сначала войди в систему."); setBusy(false); } return; }
+      const r = await api<Me>("/api/me");
+      if (!alive) return;
+      if (r.ok && r.data) { setMe(r.data); setBusy(false); }
+      else { setErr("Сессия истекла — войди заново."); setBusy(false); }
+    };
+    load();                                       // сразу при открытии
+    window.addEventListener("fb:auth", load);     // токен появился/пропал в этой вкладке
+    window.addEventListener("storage", load);     // токен изменился в другой вкладке
+    return () => { alive = false; window.removeEventListener("fb:auth", load); window.removeEventListener("storage", load); };
+  }, []);
 
   if (busy) return <div className="muted">Загрузка профиля…</div>;
   if (err) return <Panel label="ДОСТУП"><p className="msg err">{err}</p></Panel>;
