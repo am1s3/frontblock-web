@@ -11,11 +11,11 @@ export default function Leaderboard() {
   useEffect(() => { api<Row[]>("/api/leaderboard").then((r) => { if (r.ok && Array.isArray(r.data)) setRows(r.data); setLoaded(true); }); }, []);
   return (
     <>
-      <h1 className="page-h">Рейтинг <small>// топ бойцов фронта</small></h1>
+      <h1 className="page-h">Рейтинг игроков</h1>
       <Reveal>
-        <Panel label="ТАБЛИЦА БОЕВЫХ ЗАСЛУГ">
-          {!loaded ? <div className="muted">загрузка…</div> : !rows.length ? <div className="muted">пока никто не воевал.</div> : (
-            <table className="tbl"><thead><tr><th>#</th><th>Боец</th><th>Фракция</th><th>Ранг</th><th>Убийства</th><th>Смерти</th><th>K/D</th></tr></thead>
+        <Panel label="ТАБЛИЦА ИГРОКОВ">
+          {!loaded ? <div className="muted">загрузка…</div> : !rows.length ? <div className="muted">Пока нет данных.</div> : (
+            <table className="tbl"><thead><tr><th>#</th><th>Игрок</th><th>Фракция</th><th>Ранг</th><th>Убийства</th><th>Смерти</th><th>K/D</th></tr></thead>
               <tbody>{rows.map((r, i) => (
                 <tr key={r.nickname}>
                   <td className="mono">{i + 1}</td><td><b>{r.nickname}</b></td>
