@@ -4,22 +4,30 @@ import Panel from "@/components/Panel";
 import StatBlock from "@/components/StatBlock";
 import Reveal from "@/components/Reveal";
 import { api } from "@/lib/api";
-import { useAuth } from "@/lib/auth";
+import { useAuth, getToken } from "@/lib/auth";
 
 type Me = { nickname: string; rank: number; faction: string | null; subteam: string | null; kills: number; deaths: number; headshots: number; vehicles_destroyed: number; money: number; playtime_seconds: number; is_admin: boolean };
 
 export default function Profile() {
-  const { nick, loading: authLoading } = useAuth();
-  const [me, setMe] = useState<Me | null>(null); const [err, setErr] = useState("");
-  useEffect(() => {
-    if (authLoading) return;
-    if (!nick) { setErr("Сначала войди в систему."); return; }
-    api<Me>("/api/me").then((r) => { if (r.ok) setMe(r.data); else setErr("Сессия истекла — войди заново."); });
-  }, [nick, authLoading]);
+  const { loading: authLoading } = useAuth();
+  const [me, setMe] = useState<Me | null>(null);
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(true);
 
-  if (authLoading) return <div className="muted">Загрузка…</div>;
+  useEffect(() => {
+    if (authLoading) return;          // ждём, пока useAuth дочитает хранилище
+    const t = getToken();             // смотрим токен НАПРЯМУЮ — без зависимости от состояния nick
+    if (!t) { setErr("Сначала войди в систему."); setBusy(false); return; }
+    api<Me>("/api/me").then((r) => {
+      if (r.ok && r.data) setMe(r.data);
+      else setErr("Сессия истекла — войди заново.");
+      setBusy(false);
+    });
+  }, [authLoading]);
+
+  if (busy) return <div className="muted">Загрузка профиля…</div>;
   if (err) return <Panel label="ДОСТУП"><p className="msg err">{err}</p></Panel>;
-  if (!me) return <div className="muted">Загрузка профиля…</div>;
+  if (!me) return null;
 
   const h = Math.floor(me.playtime_seconds / 3600), m = Math.floor((me.playtime_seconds % 3600) / 60);
   const kd = me.deaths === 0 ? me.kills : +(me.kills / me.deaths).toFixed(2);
