@@ -16,7 +16,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
         <RadarBg />
         <Nav />
         <main className="shell">{children}</main>
-        <footer className="foot"><span>FRONT BLOCK</span><span className="muted">© 2026 · фронт не спит</span></footer>
+        <footer className="foot"><span>FRONT BLOCK</span><span className="muted">© 2026 · Front Block</span></footer>
       </body>
     </html>
   );
