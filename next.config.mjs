@@ -1,9 +1,7 @@
-
-import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
-if (process.env.NODE_ENV === 'development') await setupDevPlatform();
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // /api/* обслуживают Pages Functions (edge+D1), Next туда не лезет
+  output: "export",          // статика в папку out/ — никакой edge-боли, никакой next-on-pages
+  images: { unoptimized: true },
+  trailingSlash: true,
 };
 export default nextConfig;
