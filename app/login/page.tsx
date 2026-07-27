@@ -15,17 +15,17 @@ export default function Login() {
     const r = await api("/api/auth/login", { method: "POST", body: JSON.stringify({ nickname: nick, password: pass }) });
     setBusy(false);
     if (!r.ok) { setOk(false); setMsg(r.data?.error || "ошибка связи"); return; }
-    setToken(r.data.token); setOk(true); setMsg("Доступ разрешён. Переброс на профиль…");
+    setToken(r.data.token); setOk(true); setMsg("Вход выполнен. Переход в профиль…");
     setTimeout(() => router.push("/profile"), 700);
   }
   return (
     <>
-      <h1 className="page-h">Вход <small>// авторизация бойца</small></h1>
-      <Panel label="ТЕРМИНАЛ ДОСТУПА">
+      <h1 className="page-h">Вход</h1>
+      <Panel label="АВТОРИЗАЦИЯ">
         <form className="form" onSubmit={submit}>
-          <div className="field"><label>ПОЗЫВНОЙ</label><input value={nick} onChange={(e) => setNick(e.target.value)} autoComplete="username" /></div>
+          <div className="field"><label>НИКНЕЙМ</label><input value={nick} onChange={(e) => setNick(e.target.value)} autoComplete="username" /></div>
           <div className="field"><label>ПАРОЛЬ</label><input type="password" value={pass} onChange={(e) => setPass(e.target.value)} autoComplete="current-password" /></div>
-          <button className="btn btn--vss" disabled={busy}>{busy ? "ПРОВЕРКА…" : "ВОЙТИ"}</button>
+          <button className="btn btn--vss" disabled={busy}>{busy ? "Проверка…" : "Войти"}</button>
           {msg && <p className={`msg ${ok ? "ok" : "err"}`}>{msg}</p>}
           <p className="muted" style={{ margin: 0 }}>Нет аккаунта? <Link href="/register" style={{ color: "var(--amber)" }}>Регистрация</Link></p>
         </form>
