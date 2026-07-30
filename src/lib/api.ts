@@ -1,7 +1,4 @@
 export const WORKER = "https://frontblock-api.shushko-art.workers.dev";
-export const GITHUB_RELEASES = "https://github.com/am1s3/frontblock-modpack";
-export const GITHUB_API_RELEASES = "https://api.github.com/repos/am1s3/frontblock-modpack/releases/latest";
-export const SERVER_IP = "FrontBlock.asrv.qzz.io";
 
 export type ApiResp<T = any> = { ok: boolean; status: number; data: T | null };
 
