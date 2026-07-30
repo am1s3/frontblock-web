@@ -1,47 +1,23 @@
 "use client";
-import { useEffect, useState } from "react";
-import Panel from "@/components/Panel";
 import Reveal from "@/components/Reveal";
-import { GITHUB_RELEASES, GITHUB_API_RELEASES } from "@/lib/api";
-
-type Asset = { name: string; size: number; browser_download_url: string };
-type Release = { tag_name: string; name: string; published_at: string; assets: Asset[] };
-const mb = (b: number) => (b / 1048576).toFixed(1) + " МБ";
+import Panel from "@/components/Panel";
+import DevNotice from "@/components/DevNotice";
 
 export default function Downloads() {
-  const [rel, setRel] = useState<Release | null>(null); const [err, setErr] = useState("");
-  useEffect(() => {
-    fetch(GITHUB_API_RELEASES).then((r) => r.ok ? r.json() : Promise.reject()).then(setRel).catch(() => setErr("не удалось достать релиз — бери напрямую на GitHub."));
-  }, []);
   return (
     <>
-      <h1 className="page-h">Скачать сборку</h1>
+      <h1 className="page-h">Скачать сборку <small>// заморожено</small></h1>
       <Reveal>
-        <Panel label="АКТУАЛЬНАЯ СБОРКА">
-          <div className="dl clip">
-            <div className="dl__icon">⬡</div>
-            <div><h3>Front Block Modpack</h3><p>Forge 1.20.1 — все моды, конфиги и ресурс-пак в одном архиве.</p></div>
-            <a className="btn btn--tpa dl__btn" href={GITHUB_RELEASES + "/releases/latest"} target="_blank" rel="noreferrer">Скачать</a>
-          </div>
-          {rel && rel.assets.map((a) => (
-            <div className="asset clip" key={a.name}>
-              <code>{a.name}</code><span className="sz">{mb(a.size)}</span>
-              <a className="btn btn--ghost btn--sm" href={a.browser_download_url}>↓</a>
-            </div>
-          ))}
-          {err && <p className="msg err" style={{ marginTop: 10 }}>{err}</p>}
-          <p className="muted" style={{ marginTop: 12, fontFamily: "var(--font-mono)", fontSize: 12 }}>версия {rel?.tag_name || "—"} · обновлено {rel ? new Date(rel.published_at).toLocaleDateString("ru-RU") : "—"}</p>
-        </Panel>
+        <DevNotice />
       </Reveal>
       <Reveal delay={80}>
-        <Panel label="КАК ПОДКЛЮЧИТЬСЯ">
-          <ol style={{ margin: 0, paddingLeft: 18, color: "var(--mut)", lineHeight: 1.9 }}>
-            <li>Скачай и распакуй сборку.</li>
-            <li>Зарегистрируйся на сайте и запомни пароль.</li>
-            <li>Запусти клиент и зайди на сервер — ты окажешься в лобби.</li>
-            <li>В чат: <code>/login пароль</code>, затем <code>/faction TPA</code> или <code>VSS</code>.</li>
-            <li>На базе выбери набор и иди играть.</li>
-          </ol>
+        <Panel label="СТАТУС СБОРКИ">
+          <p className="muted" style={{ lineHeight: 1.7, margin: 0 }}>
+            Клиентская сборка появится здесь в день запуска сервера — одним архивом
+            со всеми модами, конфигами и ресурс-паком. Пока качать нечего: сервер в
+            разработке, и без него сборке некуда подключаться. Займи место в строю
+            через регистрацию — оповестим, как только откроем фронт.
+          </p>
         </Panel>
       </Reveal>
     </>
