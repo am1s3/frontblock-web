@@ -10,6 +10,7 @@ export default function Nav() {
       <nav className="nav__links">
         <Link href="/">Главная</Link>
         <Link href="/leaderboard">Рейтинг</Link>
+        <Link href="/squads">Отряды</Link>
         {!loading && nick && <Link href="/profile">Профиль</Link>}
         {!loading && isAdmin && <Link href="/admin" className="nav__admin">Админка</Link>}
       </nav>
