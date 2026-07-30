@@ -1,13 +1,12 @@
 "use client";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth";
-import JoinModal from "./JoinModal";
 
 export default function Nav() {
   const { nick, isAdmin, loading, logout } = useAuth();
   return (
     <header className="nav clip">
-      <Link href="/" className="nav__logo">FRONT<span>BLOCK</span></Link>
+      <Link href="/" className="nav__logo">FRONT <span>BLOCK</span></Link>
       <nav className="nav__links">
         <Link href="/">Главная</Link>
         <Link href="/leaderboard">Рейтинг</Link>
@@ -15,7 +14,6 @@ export default function Nav() {
         {!loading && isAdmin && <Link href="/admin" className="nav__admin">Админка</Link>}
       </nav>
       <div className="nav__right">
-        <JoinModal />
         {!loading && nick ? (
           <>
             <span className="nav__who"><b>{nick}</b></span>
