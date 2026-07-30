@@ -90,6 +90,26 @@ export default function Home() {
           </Panel>
         </Reveal>
       </div>
+
+      <Reveal delay={200}>
+        <div className="section-h"><h2>Ранги</h2><span>// расти и получай больше</span></div>
+        <div className="ranks-grid">
+          {[
+            { rank: 1, name: "Новобранец", perks: ["Кит: Штурмовик", "Доступ к фронту"] },
+            { rank: 2, name: "Рядовой", perks: ["+ Снайпер", "2 кита на выбор"] },
+            { rank: 3, name: "Ефрейтор", perks: ["+ Дроновод", "3 кита на выбор"] },
+            { rank: 4, name: "Сержант", perks: ["+ Миномётчик", "Создание отряда", "4 кита"] },
+            { rank: 5, name: "Лейтенант", perks: ["+ Техник", "5 китов на выбор"] },
+            { rank: 6, name: "Капитан", perks: ["Все киты", "Кастомный префикс", "Приоритетный слот"] },
+          ].map((r) => (
+            <div className="rank-card clip" key={r.rank}>
+              <div className="rank-card__num">{r.rank}</div>
+              <h3 className="rank-card__name">{r.name}</h3>
+              <ul className="rank-card__perks">{r.perks.map((p) => <li key={p}>{p}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+      </Reveal>
     </>
   );
 }
