@@ -5,6 +5,7 @@ import Panel from "@/components/Panel";
 import Reveal from "@/components/Reveal";
 import NewsFeed from "@/components/NewsFeed";
 import DevNotice from "@/components/DevNotice";
+import FactionFlag from "@/components/FactionFlag";
 import { api } from "@/lib/api";
 
 type Row = { nickname: string; faction: string | null; kills: number; deaths: number; kd: number };
@@ -13,7 +14,6 @@ export default function Home() {
   const [top, setTop] = useState<Row[]>([]);
   const [tpa, setTpa] = useState(0);
   const [vss, setVss] = useState(0);
-
   useEffect(() => {
     api<Row[]>("/api/leaderboard").then((r) => {
       if (r.ok && Array.isArray(r.data)) {
@@ -23,7 +23,6 @@ export default function Home() {
       }
     });
   }, []);
-
   return (
     <>
       <Reveal>
@@ -39,9 +38,7 @@ export default function Home() {
               <span style={{ color: "var(--mut2)" }}>·</span>
               <span><span className="vss">ВСС</span> {vss} в строю</span>
             </div>
-
             <DevNotice />
-
             <div className="brief__cta" style={{ justifyContent: "center" }}>
               <Link href="/register" className="btn btn--amber">Занять место в строю</Link>
             </div>
@@ -53,13 +50,13 @@ export default function Home() {
         <div className="section-h"><h2>Фракции</h2><span>// выбор один раз</span></div>
         <div className="factions">
           <div className="fac fac--tpa clip">
-            <div className="fac__tag">ТПА</div>
+            <FactionFlag faction="TPA" className="fac__flag" />
             <h3>Повстанческая армия</h3>
             <p>Партизаны, рейды и засады. Тактика быстрого удара и FPV-дронов.</p>
             <div className="fac__count">в строю: <b>{tpa}</b></div>
           </div>
           <div className="fac fac--vss clip">
-            <div className="fac__tag">ВСС</div>
+            <FactionFlag faction="VSS" className="fac__flag" />
             <h3>Силы сопротивления</h3>
             <p>Регулярная армия, оборона рубежей и бронетехника.</p>
             <div className="fac__count">в строю: <b>{vss}</b></div>
@@ -68,23 +65,15 @@ export default function Home() {
       </Reveal>
 
       <div className="grid-2">
-        <Reveal delay={120}>
-          <Panel label="НОВОСТИ"><NewsFeed /></Panel>
-        </Reveal>
+        <Reveal delay={120}><Panel label="НОВОСТИ"><NewsFeed /></Panel></Reveal>
         <Reveal delay={160}>
           <Panel label="ЛУЧШИЕ ИГРОКИ">
             {top.length ? (
-              <table className="tbl">
-                <thead><tr><th>#</th><th>Игрок</th><th>Фр.</th><th>K/D</th></tr></thead>
+              <table className="tbl"><thead><tr><th>#</th><th>Игрок</th><th>Фр.</th><th>K/D</th></tr></thead>
                 <tbody>{top.map((r, i) => (
-                  <tr key={r.nickname}>
-                    <td className="mono">{i + 1}</td>
-                    <td>{r.nickname}</td>
-                    <td className={(r.faction || "").toLowerCase()}>{r.faction || "—"}</td>
-                    <td className="mono">{r.kd}</td>
-                  </tr>
-                ))}</tbody>
-              </table>
+                  <tr key={r.nickname}><td className="mono">{i + 1}</td><td>{r.nickname}</td>
+                    <td className={(r.faction || "").toLowerCase()}>{r.faction || "—"}</td><td className="mono">{r.kd}</td></tr>
+                ))}</tbody></table>
             ) : <div className="muted">пока нет данных.</div>}
             <div style={{ marginTop: 12 }}><Link href="/leaderboard" className="btn btn--ghost btn--sm">Весь рейтинг →</Link></div>
           </Panel>
