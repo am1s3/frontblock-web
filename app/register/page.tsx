@@ -29,7 +29,6 @@ export default function Register() {
             <div className="field"><label>ПАРОЛЬ (минимум 6 символов)</label><input type="password" value={pass} onChange={(e) => setPass(e.target.value)} autoComplete="new-password" /></div>
             <button className="btn btn--tpa" disabled={busy}>{busy ? "Подожди…" : "Зарегистрироваться"}</button>
             {msg && <p className={`msg ${ok ? "ok" : "err"}`}>{msg}</p>}
-            <p className="muted" style={{ margin: 0 }}>Фракцию нужно будет выбрать один раз в игре командой /faction.</p>
           </form>
         </Panel>
       </div>
