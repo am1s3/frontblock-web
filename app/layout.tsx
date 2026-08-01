@@ -3,9 +3,9 @@ import { Oswald, Rajdhani, Share_Tech_Mono } from "next/font/google";
 import Nav from "@/components/Nav";
 import RadarBg from "@/components/RadarBg";
 
-const display = Oswald({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-display" });
-const body = Rajdhani({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"], variable: "--font-body" });
-const mono = Share_Tech_Mono({ subsets: ["latin"], weight: ["400"], variable: "--font-mono" });
+const display = Oswald({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-display", display: "swap" });
+const body = Rajdhani({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-body", display: "swap" });
+const mono = Share_Tech_Mono({ subsets: ["latin"], weight: ["400"], variable: "--font-mono", display: "swap" });
 
 export const metadata = {
   title: "FRONT BLOCK — милитари-сервер",
