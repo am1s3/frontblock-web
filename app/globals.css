@@ -240,3 +240,8 @@ code{font-family:var(--font-mono)}
   *{animation:none!important;transition:none!important}
   .reveal{opacity:1;transform:none}
 }
+
+/* ===== флаги фракций в карточках ===== */
+.fac__flag{position:absolute;right:16px;top:14px;width:60px;height:auto;opacity:.96;
+  filter:drop-shadow(0 5px 12px rgba(0,0,0,.55));transform-origin:left center;animation:flagwave 4.5s ease-in-out infinite}
+@keyframes flagwave{0%,100%{transform:rotate(-1deg) skewY(0deg)}50%{transform:rotate(1deg) skewY(-1.5deg)}}
