@@ -10,19 +10,16 @@ export default function Login() {
   const [nick, setNick] = useState(""); const [pass, setPass] = useState("");
   const [msg, setMsg] = useState(""); const [ok, setOk] = useState(false); const [busy, setBusy] = useState(false);
   const router = useRouter();
-
   async function submit(e: React.FormEvent) {
     e.preventDefault(); setMsg(""); setBusy(true);
     const r = await api("/api/auth/login", { method: "POST", body: JSON.stringify({ nickname: nick, password: pass }) });
     setBusy(false);
     if (!r.ok) { setOk(false); setMsg(r.data?.error || "ошибка связи"); return; }
-    setToken(r.data.token);
-    setOk(true); setMsg("Вход выполнен. Открываем профиль…");
+    setToken(r.data.token); setOk(true); setMsg("Вход выполнен. Открываем профиль…");
     setTimeout(() => router.push("/profile"), 600);
   }
-
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "65vh" }}>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "62vh" }}>
       <div style={{ width: "100%", maxWidth: 440 }}>
         <h1 className="page-h" style={{ textAlign: "center" }}>Вход</h1>
         <Panel label="АВТОРИЗАЦИЯ">
