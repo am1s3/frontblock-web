@@ -9,7 +9,8 @@ export default function Nav() {
   const close = () => setOpen(false);
 
   return (
-    <header className={`nav clip ${open ? "nav--open" : ""}`}>
+    <header className={`nav ${open ? "nav--open" : ""}`}>
+      <span className="nav__plate clip" aria-hidden="true" />
       <Link href="/" className="nav__logo" onClick={close}>FRONT <span>BLOCK</span></Link>
 
       <button className="nav__burger" aria-label="Меню" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
